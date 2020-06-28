@@ -1,6 +1,7 @@
 "use strict";
-
 import { app, protocol, BrowserWindow, Menu } from "electron";
+declare var global: any;
+
 import {
   createProtocol,
   /* installVueDevtools */
@@ -18,7 +19,6 @@ protocol.registerSchemesAsPrivileged([
 
 function createWindow() {
   Menu.setApplicationMenu(null);
-
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
@@ -26,12 +26,19 @@ function createWindow() {
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: (process.env
-        .ELECTRON_NODE_INTEGRATION as unknown) as boolean,
+      nodeIntegration: true,
     },
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
+    // init leveldb
+    if (!global.FileDB) {
+      const FileDB = require("./leveldb/file.js").default;
+      global.FileDB = new FileDB();
+      global.FileDB.initDB();
+      console.log(global);
+    }
+
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
     if (!process.env.IS_TEST) win.webContents.openDevTools();
@@ -80,6 +87,7 @@ app.on("ready", async () => {
     //   console.error('Vue Devtools failed to install:', e.toString())
     // }
   }
+
   createWindow();
 });
 

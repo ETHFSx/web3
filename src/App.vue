@@ -19,11 +19,11 @@
               ><span>Download</span></router-link
             >
           </li>
-          <li class="slidebar-li">
+          <!-- <li class="slidebar-li">
             <router-link to="/profit"
               ><i class="el-icon-money"> </i><span>Profit</span></router-link
             >
-          </li>
+          </li> -->
           <li class="slidebar-li">
             <router-link to="/config"
               ><i class="el-icon-money"> </i><span>Config</span></router-link
