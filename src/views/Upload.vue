@@ -1,11 +1,10 @@
 <template>
   <div id="upload">
-    <el-button type="primary" class="fl" @click="dialogVisible = true"
-      >Upload</el-button
-    >
+    <el-button type="primary" class="fl" @click="openDialog">Upload</el-button>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="time" label="Time" width="180"> </el-table-column>
-      <el-table-column prop="address" label="Hash"> </el-table-column>
+      <el-table-column prop="time" label="Time" width="110"> </el-table-column>
+      <el-table-column prop="name" label="Name"> </el-table-column>
+      <el-table-column prop="hash" label="Hash"> </el-table-column>
       <el-table-column label="status">
         <template v-slot="scope">
           <span>
@@ -22,18 +21,13 @@
         </template>
       </el-table-column>
       <el-table-column>
-        <i class="iconfont el-icon-delete"></i>
+        <template slot-scope="scope">
+          <span>
+            <i class="iconfont el-icon-delete" @click="delFile(scope.row)"></i>
+          </span>
+        </template>
       </el-table-column>
     </el-table>
-    <!-- <el-pagination
-      background
-      class="profit-pagination"
-      layout="prev, pager, next"
-      :total="total"
-      :page-size="10"
-      :hide-on-single-page="true"
-    >
-    </el-pagination> -->
     <el-dialog
       title="Upload"
       :visible.sync="dialogVisible"
@@ -51,10 +45,15 @@
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
-            Drag the file here, or <em>click Upload</em>
+            <span v-if="!fileInfo">
+              Drag the file here, or <em>click Upload</em>
+            </span>
+            <span v-if="fileInfo">{{ fileInfo.name }}</span>
           </div>
           <div class="el-upload__tip" slot="tip">
-            Please select the file to upload
+            <span v-if="!fileInfo">
+              Please select the file to upload
+            </span>
           </div>
         </el-upload>
       </div>
@@ -74,25 +73,15 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      tableData: [
-        {
-          time: "2014-12-1",
-          amount: 123,
-          status: 1,
-          address: "Afjksadfasfdasdf",
-        },
-        {
-          time: "2014-10-1",
-          amount: 12,
-          status: 0,
-          address: "Ajk24bhsb23467fsd",
-        },
-      ],
-      total: 11,
+      tableData: [],
       fileInfo: null,
     };
   },
   methods: {
+    openDialog() {
+      this.fileInfo = null;
+      this.dialogVisible = true;
+    },
     handleClose() {
       this.dialogVisible = false;
     },
@@ -100,16 +89,35 @@ export default {
       console.log(fileInfo);
       this.fileInfo = fileInfo;
     },
-    handleUpload() {
+
+    async delFile(file) {
+      await this.uploadFiles.delUploadFileById(file.id);
+      this.$message.success("delete file success!!!");
+      await this.getUploadList();
+    },
+
+    async getUploadList() {
+      this.tableData = await this.uploadFiles.getUploadList();
+    },
+
+    async handleUpload() {
       if (!this.fileInfo) {
-        this.$message.error("please select upload file");
+        this.$message.error("please select upload file!!!");
         return;
       }
+
+      await this.uploadFiles.addUploadFile({
+        name: this.fileInfo.name,
+      });
+
+      // success
+      this.$message.success("start upload file!!!");
+      this.dialogVisible = false;
+      this.getUploadList();
     },
   },
-  mounted() {
-    const test = remote.getGlobal("FileDB");
-    console.log(test);
+  created() {
+    this.getUploadList();
   },
 };
 </script>

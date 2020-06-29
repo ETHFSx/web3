@@ -4,7 +4,7 @@
       <el-aside width="200px" class="app-aside">
         <ul class="slidebar-ul">
           <li class="slidebar-li">
-            <router-link to="/user"
+            <router-link to="/wallet"
               ><i class="el-icon-monitor"></i> <span>Wallet</span></router-link
             >
           </li>

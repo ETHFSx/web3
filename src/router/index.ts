@@ -5,9 +5,10 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/user",
-    name: "user",
-    component: () => import(/* webpackChunkName: "user" */ "../views/User.vue"),
+    path: "/wallet",
+    name: "wallet",
+    component: () =>
+      import(/* webpackChunkName: "wallet" */ "../views/Wallet.vue"),
   },
   {
     path: "/upload",
@@ -34,8 +35,8 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "config" */ "../views/Config.vue"),
   },
   {
-    path: "*",
-    redirect: "/user",
+    path: "/",
+    redirect: "/wallet",
   },
 ];
 

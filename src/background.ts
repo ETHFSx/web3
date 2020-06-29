@@ -36,7 +36,6 @@ function createWindow() {
       const FileDB = require("./leveldb/file.js").default;
       global.FileDB = new FileDB();
       global.FileDB.initDB();
-      console.log(global);
     }
 
     // Load the url of the dev server if in development mode
