@@ -1,34 +1,33 @@
 <template>
   <div id="app">
     <el-container>
-      <el-aside width="200px" class="app-aside">
+      <el-aside width="80px" class="app-aside" v-show="loginState === 1">
         <ul class="slidebar-ul">
           <li class="slidebar-li">
-            <router-link to="/wallet"
-              ><i class="el-icon-monitor"></i> <span>Wallet</span></router-link
-            >
+            <router-link to="/wallet" title="Wallet"
+              ><i class="el-icon-monitor"></i
+            ></router-link>
           </li>
           <li class="slidebar-li">
-            <router-link to="/upload"
-              ><i class="el-icon-upload"></i> <span>Upload</span></router-link
-            >
+            <router-link to="/upload" title="Upload"
+              ><i class="el-icon-upload"></i
+            ></router-link>
           </li>
           <li class="slidebar-li">
-            <router-link to="/download"
+            <router-link to="/download" title="Download"
               ><i class="el-icon-download"> </i
-              ><span>Download</span></router-link
-            >
+            ></router-link>
+          </li>
+          <li class="slidebar-li">
+            <router-link to="/miner" title="Miner"
+              ><i class="el-icon-money"> </i
+            ></router-link>
           </li>
           <!-- <li class="slidebar-li">
-            <router-link to="/profit"
-              ><i class="el-icon-money"> </i><span>Profit</span></router-link
-            >
-          </li> -->
-          <li class="slidebar-li">
             <router-link to="/config"
               ><i class="el-icon-money"> </i><span>Config</span></router-link
             >
-          </li>
+          </li> -->
         </ul>
       </el-aside>
       <el-main class="mian-wrap">
@@ -40,12 +39,51 @@
   </div>
 </template>
 
+<script>
+export default {
+  computed: {
+    loginState() {
+      return this.$store.state.loginState;
+    },
+  },
+};
+</script>
+
 <style lang="scss">
+html,
+body {
+  height: 100%;
+}
 /* CSS */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track-piece {
+  /* background-color: rgba(0, 0, 0, 0.2); */
+  background-color: #edeff4;
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 5px;
+  /* background-color: rgba(125, 125, 125, 0.7); */
+  background-color: #909090;
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 5px;
+  /* background-color: rgba(125, 125, 125, 0.7); */
+  background-color: #909090;
+  -webkit-border-radius: 6px;
 }
 
 body,
@@ -61,22 +99,27 @@ div {
   color: #2c3e50;
   height: 100%;
 }
+.el-container {
+  height: 100%;
+}
 .app-aside {
   min-height: 100vh;
-  background-color: #a1afc9;
+  background-color: #333333;
+
   .slidebar-ul {
-    padding: 0;
+    padding-top: 20px;
+
     .slidebar-li {
       list-style: none;
-      height: 60px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: flex-start;
       [class^="el-icon"] {
-        margin-right: 10px;
+        font-size: 26px;
       }
       a {
-        padding-left: 30px;
+        margin: 0 auto;
         text-decoration: none;
         color: #fff;
       }
@@ -84,9 +127,13 @@ div {
   }
 }
 .mian-wrap {
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  height: 100%;
+
   .main {
     margin: 0 auto;
+    height: 100%;
+    box-sizing: border-box;
 
     .ipfs-msg {
       font-family: "Montserrat", "Verdana", system-ui, sans-serif;
@@ -108,10 +155,11 @@ div {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 10px auto;
+      margin: 0px auto 20px;
       border-bottom: solid 1px;
       border-color: #ebeef5;
       padding-bottom: 10px;
+
       .option-title {
         display: inline-block;
         width: 120px;

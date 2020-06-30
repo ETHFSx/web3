@@ -77,6 +77,11 @@ export default {
       fileInfo: null,
     };
   },
+  computed: {
+    password() {
+      return this.$store.password || "";
+    },
+  },
   methods: {
     openDialog() {
       this.fileInfo = null;
@@ -106,7 +111,7 @@ export default {
         return;
       }
 
-      await this.uploadFiles.addUploadFile({
+      let info = await this.uploadFiles.addUploadFile({
         name: this.fileInfo.name,
       });
 
@@ -114,6 +119,20 @@ export default {
       this.$message.success("start upload file!!!");
       this.dialogVisible = false;
       this.getUploadList();
+
+      this.$http
+        .post(this.$api.upload, {
+          Path: this.fileInfo.raw.path,
+          Password: this.password,
+        })
+        .then(async (res) => {
+          if (res.Error === 0) {
+            info.hash = res.Result.Hash;
+            info.status = 1;
+            await this.uploadFiles.updateUploadFile(info.id, info);
+            this.getUploadList();
+          }
+        });
     },
   },
   created() {

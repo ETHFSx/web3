@@ -42,7 +42,6 @@
             <el-input v-model="form.hash"></el-input>
           </el-form-item>
           {{ this.form.name }}
-          <!-- <el-form-item label="name">asda </el-form-item> -->
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -66,11 +65,9 @@ export default {
       },
     };
   },
-  watch: {
-    "form.hash"(val) {
-      this.setTimeObj = setTimeout(() => {
-        this.getDonwloadFile();
-      }, 100);
+  computed: {
+    password() {
+      return this.$store.password || "";
     },
   },
   methods: {
@@ -86,29 +83,31 @@ export default {
     },
 
     async handleDownload() {
-      if (!this.form.hash || !this.form.name) {
+      if (!this.form.hash) {
         this.$message.error("please fill valid hash!!!");
         return;
       }
 
-      await this.downloadFiles.addDownloadFile(this.form);
+      let info = await this.downloadFiles.addDownloadFile(this.form);
 
       this.$message.success("start download file!!!");
       this.dialogVisible = false;
       this.getDownloadList();
-    },
 
-    async getDonwloadFile() {
-      if (!this.form.hash) {
-        this.form.name = "";
-        return;
-      }
       this.$http
-        .get(this.$api.getDownloadInfo, {
-          hash: this.hash,
+        .post(this.$api.download, {
+          Hash: this.form.hash,
+          Password: this.password,
         })
-        .then((data) => {
-          this.form.name = data.name;
+        .then(async (res) => {
+          console.log(res);
+          if (res.Error === 0) {
+            info.name = res.Result.Name;
+            info.path = res.Result.Path;
+            info.status = 1;
+            await this.downloadFiles.updateDownloadFile(info.id, info);
+            this.getDownloadList();
+          }
         });
     },
 

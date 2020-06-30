@@ -14,14 +14,21 @@ class UploadFiles {
     list.unshift(id);
     await this.fileDB.updateData("[upload_list]", list);
 
-    // update upload_file_info
-    await this.fileDB.updateData(`[upload_file_info]${id}`, {
+    let info = {
       id,
       hash: "",
       name,
       time: new Date().getTime(),
       status: 0,
-    });
+    };
+
+    // update upload_file_info
+    await this.fileDB.updateData(`[upload_file_info]${id}`, info);
+    return info;
+  }
+
+  async updateUploadFile(id: string, info: any) {
+    await this.fileDB.updateData(`[upload_file_info]${id}`, info);
   }
 
   async delUploadFileById(id: string) {

@@ -23,10 +23,10 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "download" */ "../views/Download.vue"),
   },
   {
-    path: "/profit",
-    name: "profit",
+    path: "/miner",
+    name: "miner",
     component: () =>
-      import(/* webpackChunkName: "profit" */ "../views/Profit.vue"),
+      import(/* webpackChunkName: "profit" */ "../views/Miner.vue"),
   },
   {
     path: "/config",
