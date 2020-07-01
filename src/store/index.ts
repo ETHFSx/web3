@@ -1,14 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import http from "@/assets/http/http";
-import API from "@/assets/http/api";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    loginState: 0,
-    password: "",
+    loginState: 1,
+    password: "1323",
     userInfo: null,
   },
   mutations: {
@@ -24,17 +23,23 @@ export default new Vuex.Store({
   },
   actions: {
     getUserInfo({ state, commit }) {
-      http
-        .get(API.getUserInfo, {
-          params: {
-            Password: state.password,
-          },
-        })
-        .then((res) => {
-          if (res.Error === 0) {
-            commit("SET_USER_INFO", res.Result);
-          }
-        });
+      http.getUserInfo().then((res) => {
+        if (res.error === 0) {
+          commit("SET_USER_INFO", res.result);
+        } else {
+          console.log(res);
+        }
+      });
+      // .get(API.getUserInfo, {
+      //   params: {
+      //     Password: state.password,
+      //   },
+      // })
+      // .then((res) => {
+      //   if (res.Error === 0) {
+      //     commit("SET_USER_INFO", res.Result);
+      //   }
+      // });
     },
   },
   modules: {},

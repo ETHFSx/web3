@@ -60,6 +60,9 @@ export default {
     userInfo() {
       return this.$store.state.userInfo;
     },
+    password() {
+      return this.$store.state.password;
+    },
   },
   watch: {
     loginState(val) {
@@ -73,25 +76,43 @@ export default {
   },
   methods: {
     login() {
-      this.$http
-        .post(this.$api.login, {
-          Address: this.form.walletAddr,
-          Password: this.form.password,
-        })
-        .then((res) => {
-          if (res.Error === 0) {
-            this.$store.commit("SET_LOGIN_STATE", 1);
-            this.$store.commit("SET_PASSWORD", this.form.password);
-            this.$store.dispatch("getUserInfo");
-          }
-        });
-    },
-    logout() {
-      this.$http.post(this.$api.logout).then((res) => {
-        if (res.Error === 0) {
-          this.$store.commit("SET_LOGIN_STATE", 0);
+      this.$http.login(this.form.walletAddr, this.form.password).then((res) => {
+        if (res.error === 0) {
+          this.$store.commit("SET_LOGIN_STATE", 1);
+          this.$store.commit("SET_PASSWORD", this.form.password);
+          this.$store.dispatch("getUserInfo");
+        } else {
+          this.$message.error(res.desc);
         }
       });
+
+      // this.$http
+      //   .post(this.$api.login, {
+      //     Address: this.form.walletAddr,
+      //     Password: this.form.password,
+      //   })
+      //   .then((res) => {
+      //     if (res.Error === 0) {
+      // this.$store.commit("SET_LOGIN_STATE", 1);
+      // this.$store.commit("SET_PASSWORD", this.form.password);
+      // this.$store.dispatch("getUserInfo");
+      //     }
+      //   });
+    },
+    logout() {
+      this.$http.logout(this.password).then((res) => {
+        if (res.errror === 0) {
+          this.$store.commit("SET_LOGIN_STATE", 0);
+        } else {
+          this.$message.error(res.desc);
+        }
+      });
+
+      // this.$http.post(this.$api.logout).then((res) => {
+      //   if (res.Error === 0) {
+      //     this.$store.commit("SET_LOGIN_STATE", 0);
+      //   }
+      // });
     },
   },
 };

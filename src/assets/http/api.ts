@@ -1,14 +1,15 @@
 const VERSION = "/v1";
 const api: any = {
-  login: VERSION + "/api/login",
-  logout: VERSION + "/api/logout",
-  getUserInfo: VERSION + "/api/user/info",
-  upload: VERSION + "/api/upload",
-  download: VERSION + "/api/download",
-  nodeStart: VERSION + "/api/node/start",
-  nodeStop: VERSION + "/api/node/stop",
-  pledge: VERSION + "/api/pledge",
-  minerList: VERSION + "/api/miner/list",
+  HOST: "http://127.0.0.1:6000",
+  login: "login",
+  logout: "quit",
+  getUserInfo: "/api/user/info",
+  upload: "upload",
+  download: "download",
+  nodeStart: "/api/node/start",
+  nodeStop: "/api/node/stop",
+  pledge: "pledge",
+  minerList: "/api/miner/list",
 };
 
 export default api;

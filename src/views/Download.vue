@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     password() {
-      return this.$store.password || "";
+      return this.$store.state.password || "";
     },
   },
   methods: {
@@ -94,21 +94,33 @@ export default {
       this.dialogVisible = false;
       this.getDownloadList();
 
-      this.$http
-        .post(this.$api.download, {
-          Hash: this.form.hash,
-          Password: this.password,
-        })
-        .then(async (res) => {
-          console.log(res);
-          if (res.Error === 0) {
-            info.name = res.Result.Name;
-            info.path = res.Result.Path;
-            info.status = 1;
-            await this.downloadFiles.updateDownloadFile(info.id, info);
-            this.getDownloadList();
-          }
-        });
+      this.$http.download(this.form.hash, this.password).then(async (res) => {
+        if (res.error === 0) {
+          info.name = res.result.Name;
+          info.path = res.result.Path;
+          info.status = 1;
+          await this.downloadFiles.updateDownloadFile(info.id, info);
+          this.getDownloadList();
+        } else {
+          this.$message.error(res.desc);
+        }
+      });
+
+      // this.$http
+      //   .post(this.$api.download, {
+      //     Hash: this.form.hash,
+      //     Password: this.password,
+      //   })
+      //   .then(async (res) => {
+      //     console.log(res);
+      //     if (res.Error === 0) {
+      //       info.name = res.Result.Name;
+      //       info.path = res.Result.Path;
+      //       info.status = 1;
+      //       await this.downloadFiles.updateDownloadFile(info.id, info);
+      //       this.getDownloadList();
+      //     }
+      //   });
     },
 
     async delFile(file) {

@@ -35,6 +35,10 @@
       :before-close="handleClose"
     >
       <div>
+        <div class="copy-number">
+          Copy Number:
+          <el-input-number v-model="form.CopyNumber" :min="0"></el-input-number>
+        </div>
         <el-upload
           class="upload-demo"
           drag
@@ -75,11 +79,14 @@ export default {
       dialogVisible: false,
       tableData: [],
       fileInfo: null,
+      form: {
+        CopyNumber: 0,
+      },
     };
   },
   computed: {
     password() {
-      return this.$store.password || "";
+      return this.$store.state.password;
     },
   },
   methods: {
@@ -119,20 +126,37 @@ export default {
       this.$message.success("start upload file!!!");
       this.dialogVisible = false;
       this.getUploadList();
+      console.log(this);
 
       this.$http
-        .post(this.$api.upload, {
-          Path: this.fileInfo.raw.path,
-          Password: this.password,
-        })
+        .upload(this.fileInfo.raw.path, this.form.CopyNumber, 1, this.password)
         .then(async (res) => {
-          if (res.Error === 0) {
+          if (res.error === 0) {
             info.hash = res.Result.Hash;
             info.status = 1;
             await this.uploadFiles.updateUploadFile(info.id, info);
             this.getUploadList();
+          } else {
+            this.$message.error(res.desc);
+            info.status = 2;
+            await this.uploadFiles.updateUploadFile(info.id, info);
+            this.getUploadList();
           }
         });
+
+      // this.$http
+      //   .post(this.$api.upload, {
+      //     Path: this.fileInfo.raw.path,
+      //     Password: this.password,
+      //   })
+      //   .then(async (res) => {
+      //     if (res.Error === 0) {
+      //       info.hash = res.Result.Hash;
+      //       info.status = 1;
+      //       await this.uploadFiles.updateUploadFile(info.id, info);
+      //       this.getUploadList();
+      //     }
+      //   });
     },
   },
   created() {
@@ -145,6 +169,12 @@ export default {
 #upload {
   .profit-pagination {
     margin-top: 20px;
+  }
+
+  .copy-number {
+    text-align: left;
+    width: 360px;
+    margin: 0 auto 10px;
   }
 }
 </style>

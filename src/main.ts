@@ -3,14 +3,14 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import http from "@/assets/http/http";
-import "@/assets/http/mock";
-import API from "@/assets/http/api";
+// import "@/assets/http/mock";
+// import API from "@/assets/http/api";
 import UploadFiles from "@/entity/uploadFiles";
 import DownloadFiles from "@/entity/downloadFiles";
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = http;
-Vue.prototype.$api = API;
+// Vue.prototype.$api = API;
 Vue.prototype.uploadFiles = new UploadFiles();
 Vue.prototype.downloadFiles = new DownloadFiles();
 
