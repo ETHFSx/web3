@@ -2,11 +2,6 @@ module.exports = {
   devServer: {
     host: "127.0.0.1",
     port: 2333,
-    proxy: {
-      "/api": {
-        target: "http://127.0.0.1:6000",
-      },
-    },
   },
   pluginOptions: {
     electronBuilder: {

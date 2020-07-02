@@ -1,5 +1,5 @@
 const api: any = {
-  HOST: "/api",
+  HOST: "http://localhost:11111",
   login: "login",
   logout: "quit",
   getUserInfo: "/api/user/info",
