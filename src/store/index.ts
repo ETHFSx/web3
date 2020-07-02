@@ -6,8 +6,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    loginState: 1,
-    password: "1323",
+    loginState: 0,
+    password: "",
     userInfo: null,
   },
   mutations: {
@@ -30,16 +30,6 @@ export default new Vuex.Store({
           console.log(res);
         }
       });
-      // .get(API.getUserInfo, {
-      //   params: {
-      //     Password: state.password,
-      //   },
-      // })
-      // .then((res) => {
-      //   if (res.Error === 0) {
-      //     commit("SET_USER_INFO", res.Result);
-      //   }
-      // });
     },
   },
   modules: {},

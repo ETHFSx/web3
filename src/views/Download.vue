@@ -94,17 +94,27 @@ export default {
       this.dialogVisible = false;
       this.getDownloadList();
 
-      this.$http.download(this.form.hash, this.password).then(async (res) => {
-        if (res.error === 0) {
-          info.name = res.result.Name;
-          info.path = res.result.Path;
-          info.status = 1;
+      this.$http
+        .download(this.form.hash, this.password)
+        .then(async (res) => {
+          if (res.error === 0) {
+            info.name = res.result.Name;
+            info.path = res.result.Path;
+            info.status = 1;
+            await this.downloadFiles.updateDownloadFile(info.id, info);
+            this.getDownloadList();
+          } else {
+            info.status = 2;
+            this.$message.error(res.desc);
+            await this.downloadFiles.updateDownloadFile(info.id, info);
+            this.getDownloadList();
+          }
+        })
+        .catch(async (e) => {
+          info.status = 2;
           await this.downloadFiles.updateDownloadFile(info.id, info);
           this.getDownloadList();
-        } else {
-          this.$message.error(res.desc);
-        }
-      });
+        });
 
       // this.$http
       //   .post(this.$api.download, {

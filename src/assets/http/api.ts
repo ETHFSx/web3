@@ -1,6 +1,5 @@
-const VERSION = "/v1";
 const api: any = {
-  HOST: "http://127.0.0.1:6000",
+  HOST: "/api",
   login: "login",
   logout: "quit",
   getUserInfo: "/api/user/info",

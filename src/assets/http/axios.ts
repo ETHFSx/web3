@@ -8,9 +8,12 @@ axios.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    console.info(error.response);
-    Message.error(error.response.statusText || "service failed!!!");
-    return Promise.reject(error.response.data);
+    // console.info(error.response);
+    Message.error(
+      (error && error.response && error.response.statusText) ||
+        "service failed!!!"
+    );
+    return Promise.reject(error.response);
   }
 );
 

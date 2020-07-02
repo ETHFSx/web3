@@ -6,6 +6,9 @@ import {
   createProtocol,
   /* installVueDevtools */
 } from "vue-cli-plugin-electron-builder/lib";
+
+import { runEthfsDamon } from "./node";
+
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -19,6 +22,16 @@ protocol.registerSchemesAsPrivileged([
 
 function createWindow() {
   Menu.setApplicationMenu(null);
+
+  if (process.env.WEBPACK_DEV_SERVER_URL) {
+    // init leveldb
+    if (!global.FileDB) {
+      const FileDB = require("./leveldb/file.js").default;
+      global.FileDB = new FileDB();
+      global.FileDB.initDB();
+    }
+  }
+
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
@@ -31,13 +44,6 @@ function createWindow() {
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
-    // init leveldb
-    if (!global.FileDB) {
-      const FileDB = require("./leveldb/file.js").default;
-      global.FileDB = new FileDB();
-      global.FileDB.initDB();
-    }
-
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
     if (!process.env.IS_TEST) win.webContents.openDevTools();
@@ -86,8 +92,8 @@ app.on("ready", async () => {
     //   console.error('Vue Devtools failed to install:', e.toString())
     // }
   }
-
   createWindow();
+  runEthfsDamon();
 });
 
 app.allowRendererProcessReuse = true;

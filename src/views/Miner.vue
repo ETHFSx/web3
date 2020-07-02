@@ -1,15 +1,5 @@
 <template>
   <div id="miner">
-    <!-- <div class="miner-pledge">
-      <el-input-number :min="0" v-model="pledgeNumber"></el-input-number>
-      <el-button
-        type="primary"
-        class="pledge-btn"
-        v-if="!userInfo || userInfo.NodeState !== 1"
-        @click="setPledge"
-        >Pledge</el-button
-      >
-    </div> -->
     <el-button type="primary" class="fl" @click="openDialog">Pledge</el-button>
     <el-button
       class="fr"
@@ -52,6 +42,8 @@
 </template>
 
 <script>
+const { ipcRenderer } = window.require("electron");
+
 export default {
   name: "miner",
   data() {
@@ -90,51 +82,14 @@ export default {
           this.$message.error(res.desc);
         }
       });
-      // this.$http
-      //   .get(this.$api.minerList, {
-      //     Password: this.password,
-      //   })
-      //   .then((res) => {
-      //     if (res.Error === 0) {
-      //       this.tableData = res.Result;
-      //     }
-      //   });
     },
     async openMining() {
-      this.$http.nodeStart().then((res) => {
-        if (res.error === 0) {
-          this.$store.dispatch("getUserInfo");
-        } else {
-          this.$message.error(res.desc);
-        }
-      });
-      // this.$http
-      //   .post(this.$api.nodeStart, {
-      //     Password: this.password,
-      //   })
-      //   .then((res) => {
-      //     if (res.Error === 0) {
-      //       this.$store.dispatch("getUserInfo");
-      //     }
-      //   });
+      let state = ipcRenderer.sendSync("startIpfs", this.password);
+      this.$store.dispatch("getUserInfo");
     },
     async closeMining() {
-      this.$http.nodeStop().then((res) => {
-        if (res.error === 0) {
-          this.$store.dispatch("getUserInfo");
-        } else {
-          this.$message.error(res.desc);
-        }
-      });
-      // this.$http
-      //   .post(this.$api.nodeStop, {
-      //     Password: this.password,
-      //   })
-      //   .then((res) => {
-      //     if (res.Error === 0) {
-      //       this.$store.dispatch("getUserInfo");
-      //     }
-      //   });
+      let state = ipcRenderer.sendSync("stopIpfs", this.password);
+      this.$store.dispatch("getUserInfo");
     },
     async setPledge() {
       this.$http
