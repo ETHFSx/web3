@@ -1,0 +1,7 @@
+{
+  "Configuration": {
+    "PublicIP": "127.0.0.1",
+    "HttpJsonPort": 11111,
+    "Key": ""
+  }
+}

@@ -5,9 +5,10 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/user",
-    name: "user",
-    component: () => import(/* webpackChunkName: "user" */ "../views/User.vue"),
+    path: "/wallet",
+    name: "wallet",
+    component: () =>
+      import(/* webpackChunkName: "wallet" */ "../views/Wallet.vue"),
   },
   {
     path: "/upload",
@@ -22,10 +23,10 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "download" */ "../views/Download.vue"),
   },
   {
-    path: "/profit",
-    name: "profit",
+    path: "/miner",
+    name: "miner",
     component: () =>
-      import(/* webpackChunkName: "profit" */ "../views/Profit.vue"),
+      import(/* webpackChunkName: "profit" */ "../views/Miner.vue"),
   },
   {
     path: "/config",
@@ -35,7 +36,9 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: "*",
-    redirect: "/user",
+    name: "wallet",
+    component: () =>
+      import(/* webpackChunkName: "config" */ "../views/Wallet.vue"),
   },
 ];
 
