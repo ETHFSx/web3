@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import crypto from "crypto";
 export default {
   name: "user",
   data() {
@@ -76,28 +77,20 @@ export default {
   },
   methods: {
     login() {
-      this.$http.login(this.form.walletAddr, this.form.password).then((res) => {
+      let _password = crypto
+        .createHash("sha256")
+        .update(this.form.password)
+        .digest("hex");
+      console.log(_password);
+      this.$http.login(this.form.walletAddr, _password).then((res) => {
         if (res.error === 0) {
           this.$store.commit("SET_LOGIN_STATE", 1);
-          this.$store.commit("SET_PASSWORD", this.form.password);
+          this.$store.commit("SET_PASSWORD", _password);
           this.$store.dispatch("getUserInfo");
         } else {
           this.$message.error(res.desc);
         }
       });
-
-      // this.$http
-      //   .post(this.$api.login, {
-      //     Address: this.form.walletAddr,
-      //     Password: this.form.password,
-      //   })
-      //   .then((res) => {
-      //     if (res.Error === 0) {
-      // this.$store.commit("SET_LOGIN_STATE", 1);
-      // this.$store.commit("SET_PASSWORD", this.form.password);
-      // this.$store.dispatch("getUserInfo");
-      //     }
-      //   });
     },
     logout() {
       this.$http.logout(this.password).then((res) => {
@@ -107,12 +100,6 @@ export default {
           this.$message.error(res.desc);
         }
       });
-
-      // this.$http.post(this.$api.logout).then((res) => {
-      //   if (res.Error === 0) {
-      //     this.$store.commit("SET_LOGIN_STATE", 0);
-      //   }
-      // });
     },
   },
 };

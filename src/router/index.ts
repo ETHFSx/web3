@@ -35,8 +35,10 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "config" */ "../views/Config.vue"),
   },
   {
-    path: "/",
-    redirect: "/wallet",
+    path: "*",
+    name: "wallet",
+    component: () =>
+      import(/* webpackChunkName: "config" */ "../views/Wallet.vue"),
   },
 ];
 
