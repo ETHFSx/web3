@@ -4,22 +4,25 @@
       <el-aside width="80px" class="app-aside" v-show="loginState === 1">
         <ul class="slidebar-ul">
           <li class="slidebar-li">
-            <router-link to="/wallet" title="Wallet"
+            <router-link to="/wallet" title="Wallet" active-class="active-nav"
               ><i class="el-icon-monitor"></i
             ></router-link>
           </li>
           <li class="slidebar-li">
-            <router-link to="/upload" title="Upload"
+            <router-link to="/upload" title="Upload" active-class="active-nav"
               ><i class="el-icon-upload"></i
             ></router-link>
           </li>
           <li class="slidebar-li">
-            <router-link to="/download" title="Download"
+            <router-link
+              to="/download"
+              title="Download"
+              active-class="active-nav"
               ><i class="el-icon-download"> </i
             ></router-link>
           </li>
           <li class="slidebar-li">
-            <router-link to="/miner" title="Miner"
+            <router-link to="/miner" title="Miner" active-class="active-nav"
               ><i class="el-icon-money"> </i
             ></router-link>
           </li>
@@ -115,6 +118,7 @@ div {
       display: flex;
       align-items: center;
       justify-content: flex-start;
+
       [class^="el-icon"] {
         font-size: 26px;
       }
@@ -122,6 +126,15 @@ div {
         margin: 0 auto;
         text-decoration: none;
         color: #fff;
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        padding-top: 12px;
+        transition: all 0.2s ease;
+
+        &.active-nav {
+          background: #555555;
+        }
       }
     }
   }
